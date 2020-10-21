@@ -1,0 +1,26 @@
+{
+    "del": [
+        {
+            "ep": "/car/:id",
+            "source": "source/api/cars.json",
+            "key": "id"
+        }
+    ],
+    "post": [
+        {
+            "ep": "/cars",
+            "source": "source/api/cars.json"
+        }
+    ],
+    "get": [
+        {
+            "ep": "/cars",
+            "source": "source/api/cars.json"
+        },
+        {
+            "ep": "/car/:id",
+            "source": "source/api/cars.json",
+            "key": "id"
+        }
+    ]
+}

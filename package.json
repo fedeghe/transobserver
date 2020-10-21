@@ -1,0 +1,14 @@
+{
+    "name": "transobserver",
+    "version": "0.0.0",
+    "main": "dist/index.js",
+    "author": "fedeghe <fedeghe@gmail.com>",
+    "license": "MIT",
+    "dependencies": {
+        "malta": "^4.1.25",
+        "malta-restify": "^1.0.6"
+    },
+    "scripts": {
+        "build": "malta source/build.json"
+    }
+}
