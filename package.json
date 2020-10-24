@@ -6,6 +6,9 @@
     "license": "MIT",
     "dependencies": {
         "malta": "^4.1.25",
+        "malta-browser-refresh": "^1.2.9",
+        "malta-dev-srv": "^1.1.7",
+        "malta-less": "^1.0.12",
         "malta-restify": "^1.0.6"
     },
     "scripts": {

@@ -3,5 +3,6 @@
         "rm -rf dist",
         "mkdir dist"
     ],
-    "source/index.js": "dist -plugins=malta-restify[endpoints:'source/api/restify.json',authorization:'mypwd']"
+    "source/index.js": "dist -plugins=malta-restify[endpoints:'source/api/restify.json',authorization:'mypwd']",
+    "source/sample/require.json": true
 }

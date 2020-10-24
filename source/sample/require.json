@@ -1,0 +1,10 @@
+{
+    "EXE": [
+        "rm -rf sample",
+        "mkdir -p sample/dist"
+    ],
+    "source/sample/*.html": "sample -plugins=malta-dev-srv[folder:'sample',port:3002]...malta-browser-refresh[files:'relative']",
+    "source/sample/*.js": "sample",
+    "source/sample/*.less": "sample -plugins=malta-less",
+    "source/index.js": "sample/dist"
+}
