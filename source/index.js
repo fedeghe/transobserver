@@ -11,6 +11,7 @@ var Transobserver = (function () {
         this.to = null;
         var maybe = storage.getItem(key)
         this.data = maybe ? JSON.parse(maybe) : {};
+        console.log(this.data)
 
         this.revive();
     }
@@ -23,15 +24,11 @@ var Transobserver = (function () {
         console.log('start')
         var self = this;
         function requestAll() {
-            console.log('requesting all')
             for (var topic in self.data) {
                 request(topic)
             }
         }
         function request(topic) {
-            console.log('requesting topic ' + topic)
-            console.log(self)
-
             for (var ep in self.data[topic]) {
                 for (var handler in self.data[topic][ep]) {
                     if (handler in self.handlers) {
@@ -66,6 +63,7 @@ var Transobserver = (function () {
             this.data[topic][endpoint][handlerName] = true;
             changed = true;
         }
+        !changed && console.log('nothing changed')
         changed && this.commit();
     };
 
