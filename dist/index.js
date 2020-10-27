@@ -6,9 +6,11 @@ var Transobserver = (function () {
     function getKey(topic, endpoint) {
         return topic + '---' + endpoint;
     }
+    
     function Tobserver() {
         this.handlers = {};
         this.to = null;
+        this.lastResponse = '';
         var maybe = storage.getItem(key)
         this.data = maybe ? JSON.parse(maybe) : {};
         console.log(this.data)
@@ -23,6 +25,14 @@ var Transobserver = (function () {
     Tobserver.prototype.start = function (timeout) {
         console.log('start')
         var self = this;
+
+        /*
+        topic : {
+            endpoint: {
+                handlerName: Bool // maybe not useful as a hash
+            }
+        }
+         */
         function requestAll() {
             for (var topic in self.data) {
                 request(topic)
@@ -52,6 +62,13 @@ var Transobserver = (function () {
 
     Tobserver.prototype.addHandler = function (handlerName, func) {
         this.handlers[handlerName] = func;
+    };
+
+    Tobserver.prototype.responseIsUpdated = function (newResponseObj) {
+        var newResponse = JSON.stringify(newResponseObj),
+            result = this.lastResponse !== newResponse;
+        this.lastResponse = newResponse;
+        return result;
     };
 
     Tobserver.prototype.add = function (topic, endpoint, handlerName) {

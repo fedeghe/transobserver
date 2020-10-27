@@ -23,7 +23,7 @@
             "key": "id"
         },
         {
-            "ep": "/gs/:id",
+            "ep": "/stations/:id",
             "source": "source/api/stations.json",
             "key": "id"
         }
