@@ -453,10 +453,10 @@ malta-restify@^1.0.6:
     restify-errors "^8.0.1"
     restify-plugins "^1.6.0"
 
-malta@^4.1.25:
-  version "4.1.25"
-  resolved "https://registry.yarnpkg.com/malta/-/malta-4.1.25.tgz#0d193ae345e8333d322efddc8e1404850077a441"
-  integrity sha512-zVijoAdwrC9FJKLbHhHe6zuX+DamZ1cBj63yTVD8HI41JhhKbmUMc4UmhSvM4h16mr8AVNuBe3dQdLhv4X9bqw==
+malta@^4.1.27:
+  version "4.1.27"
+  resolved "https://registry.yarnpkg.com/malta/-/malta-4.1.27.tgz#09cd7b16a698f8aaa37682c9e284c48a731d0dfc"
+  integrity sha512-LX1OFH6smY5BJOAozWAE4XBwpbZ/qsempxINijkTIEKrnCDxwnqqVVsCFtLldBExWNWVaj7wiNDxEzZZYW25tg==
 
 mime@1.4.1:
   version "1.4.1"
