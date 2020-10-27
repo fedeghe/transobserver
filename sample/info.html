@@ -8,7 +8,6 @@
     <link href="style.css" rel="stylesheet">
     <script src="dist/index.js"></script>
     <script src="handlers.js"></script>
-    <script src="index.js"></script>
 </head>
 
 <body>
@@ -16,6 +15,10 @@
     <h1>Some informations</h1>
 
     <a href="index.html">home</a>
+    <script>
+        Transobserver.add('stations', 'http://127.0.0.1:3001/cars', 'writeAlert')
+        Transobserver.start(1000);
+    </script>
 <script>(function () {
 			var t = window.setInterval(function () {
 				var s = document.createElement('script'),

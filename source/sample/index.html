@@ -8,14 +8,16 @@
     <link href="style.css" rel="stylesheet">
     <script src="dist/index.js"></script>
     <script src="handlers.js"></script>
-    <script src="index.js"></script>
 </head>
 
 <body>
     <div id="trg"></div>
     <h1>Home</h1>
     <a href="info.html">info</a>
-
+    <script>
+        Transobserver.add('cars', 'http://127.0.0.1:3001/cars', 'writeAlert')
+        Transobserver.start(1000);
+    </script>
 </body>
 
 </html>

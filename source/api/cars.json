@@ -10,5 +10,11 @@
         "brand": "Audi",
         "model": "A7",
         "price": "128k"
+    },
+    {
+        "id": 3,
+        "brand": "Peugeot",
+        "model": "508 sw",
+        "price": "54k"
     }
 ]

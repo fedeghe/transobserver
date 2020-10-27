@@ -21,6 +21,11 @@
             "ep": "/car/:id",
             "source": "source/api/cars.json",
             "key": "id"
+        },
+        {
+            "ep": "/gs/:id",
+            "source": "source/api/stations.json",
+            "key": "id"
         }
     ]
 }
