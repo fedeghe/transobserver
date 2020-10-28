@@ -12,6 +12,7 @@
         "malta-restify": "^1.0.6"
     },
     "scripts": {
-        "build": "malta source/build.json"
+        "build": "malta source/build.json",
+        "srv": "node sample/midSrv.js"
     }
 }

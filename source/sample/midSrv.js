@@ -3,29 +3,53 @@ const http = require('http'),
     route = '/transObserver';
 
 http.createServer((req, res) => {
-    res.writeHead(200, { 'Content-Type': 'application/json' });
+
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Request-Method', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, POST');
+    res.setHeader('Access-Control-Allow-Headers', '*');
+    res.setHeader('Content-Type', 'application/json');
+
     const url = req.url,
         method = req.method,
-        startRequests = body => {
-            
-        },
-        aggregateResponses = () => {
+        startRequests = requests => {
+            console.log('requests', requests)
+            Object.keys(requests).reduce((acc, topic) => {
+                acc = acc.concat(requests.topic)
+                return acc
+            }, [])
+            var t = {
+                "cars": {
+                    "http://127.0.0.1:3001/cars": {
+                        "writeCars": true
+                    }
+                },
+                "stations": {
+                    "http://127.0.0.1:3001/stations": {
+                        "writeStations": true
+                    }
+                }
+            };
 
-        },
-        reply = data => {
-            res.write(Json.stringify(data));
-            res.end();
-        };
 
-    if (method === 'POST' && url === route) {
+
+            return reply(requests)
+        },
+        reply = data => res.end(data);
+
+    if (method === 'OPTIONS') {
+        res.writeHead(200);
+        res.end();
+    }
+    else if (method === 'POST' && url === route) {
         let body = '';
         req.on('data', data => body += data);
-        // body is ready
-        req.on('end',  () => startRequests(body));
+        // body already has the stringified version
+        req.on('end', () => startRequests(body));
     } else {
         res.statusCode = 400;
         res.end('400: Bad Request');
     }
 }).listen(port, () => {
-    console.log(`mid server start at port ${port}`);
+    console.log(`Mitm server started on port ${port}`);
 });

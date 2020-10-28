@@ -1,7 +1,23 @@
 var Transobserver = (function () {
 
+
+
     var key = 'transObserverKey',
-        storage = localStorage;
+        storage = localStorage,
+        postData = function (url, data, cb) {
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", url, true);  
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.setRequestHeader('Access-Control-Allow-Headers', '*');
+            
+            xhr.onreadystatechange = function() {
+                if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+                    console.log(xhr)
+                    cb(JSON.parse(xhr.responseText));
+                }
+            }
+            xhr.send(JSON.stringify(data));
+        };
 
     function getKey(topic, endpoint) {
         return topic + '---' + endpoint;
@@ -13,19 +29,11 @@ var Transobserver = (function () {
         this.lastResponse = '';
         var maybe = storage.getItem(key)
         this.data = maybe ? JSON.parse(maybe) : {};
-        console.log(this.data)
-
-        this.revive();
     }
 
-    // refill the handlers, 
-    Tobserver.prototype.revive = function () {
-
-    };
     Tobserver.prototype.start = function (timeout) {
         console.log('start')
-        var self = this;
-
+        var self = this;        
         /*
         topic : {
             endpoint: {
@@ -34,18 +42,11 @@ var Transobserver = (function () {
         }
          */
         function requestAll() {
-            for (var topic in self.data) {
-                request(topic)
-            }
+            postData('http://127.0.0.1:4000/transObserver', self.data, consume)
         }
-        function request(topic) {
-            for (var ep in self.data[topic]) {
-                for (var handler in self.data[topic][ep]) {
-                    if (handler in self.handlers) {
-                        self.handlers[handler]('somedata', self.remove)
-                    }
-                }
-            }
+        function consume(data) {
+            console.log('data back');
+            console.log(data);
         }
         this.to = setTimeout(requestAll, timeout)
     };
@@ -55,13 +56,16 @@ var Transobserver = (function () {
     };
 
     Tobserver.prototype.addHandlers = function (handlers) {
-        for (var h in handlers) {
-            this.addHandler(h, handlers[h]);
-        }
+        var self = this
+        handlers.map(function (h) {
+            self.addHandler(h);
+        });
     };
 
-    Tobserver.prototype.addHandler = function (handlerName, func) {
-        this.handlers[handlerName] = func;
+    Tobserver.prototype.addHandler = function (func) {
+        if (typeof func === 'function') {
+            this.handlers[func.name] = func;
+        }
     };
 
     Tobserver.prototype.responseIsUpdated = function (newResponseObj) {
@@ -71,32 +75,24 @@ var Transobserver = (function () {
         return result;
     };
 
-    Tobserver.prototype.add = function (topic, endpoint, handlerName) {
+    Tobserver.prototype.add = function (endpoint, handlerName) {
         var changed = false;
-        if (!(topic in this.data))
-            this.data[topic] = {};
-        if (!(endpoint in this.data[topic]))
-            this.data[topic][endpoint] = {};
-        if (!(handlerName in this.data[topic][endpoint])) {
-            this.data[topic][endpoint][handlerName] = true;
+        if (!(endpoint in this.data)) {
+            this.data[endpoint] = {};
+        }
+        if (!(handlerName in this.data[endpoint])) {
+            this.data[endpoint][handlerName] = true;
             changed = true;
         }
         !changed && console.log('nothing changed +')
         changed && this.commit();
     };
 
-    Tobserver.prototype.remove = function (topic, endpoint, handlerName) {
+    Tobserver.prototype.remove = function (endpoint, handlerName) {
         var changed = false;
-        if (topic in this.data && endpoint in this.data[topic]) {
-            if (handlerName in this.data[topic][endpoint]) {
-                this.data[topic][endpoint][handlerName] = null;
-                delete this.data[topic][endpoint][handlerName];
-                changed = true;
-            } else {
-                this.data[topic][endpoint] = null;
-                delete this.data[topic][endpoint];
-                changed = true;
-            }
+        if (endpoint in this.data && this.data[endpoint].indexOf(handlerName) >= 0) {
+            this.data[endpoint][handlerName] = false;
+            changed = true;
         }
         !changed && console.log('nothing changed -')
         changed && this.commit();

@@ -11,12 +11,13 @@
 </head>
 
 <body>
-    <div id="trg"></div>
+    <div id="cars"></div>
+    <div id="stations"></div>
     <h1>Some informations</h1>
 
     <a href="index.html">home</a>
     <script>
-        Transobserver.add('stations', 'http://127.0.0.1:3001/cars', 'writeAlert')
+        Transobserver.add('http://127.0.0.1:3001/stations', 'writeStations')
         Transobserver.start(1000);
     </script>
 <script>(function () {
