@@ -1,6 +1,46 @@
+const { promises } = require('fs');
+
 const http = require('http'),
     port = 4000,
     route = '/transObserver';
+
+
+
+const request = (url, resolve, reject) => {
+    console.log(`requesting ${url}`)
+    http.get(url, (res) => {
+        const { statusCode } = res;
+        const contentType = res.headers['content-type'];
+        let error;
+        if (statusCode !== 200) {
+            error = new Error(`Request Failed.\nStatus Code: ${statusCode}`);
+        } else if (!/^application\/json/.test(contentType)) {
+            error = new Error(`Invalid content-type.\nExpected application/json but received ${contentType}`);
+        }
+        if (error) {
+            reject(error.message);
+            // Consume response data to free up memory
+            res.resume();
+            return;
+        }
+
+        res.setEncoding('utf8');
+        let rawData = '';
+        res.on('data', (chunk) => { rawData += chunk.toString(); });
+        res.on('end', () => {
+            try {
+                const parsedData = JSON.parse(rawData);
+                resolve(parsedData);
+            } catch (e) {
+                reject(e.message);
+            }
+        });
+    }).on('error', (e) => {
+        reject(`Got error: ${e.message}`);
+    });
+};
+
+
 
 http.createServer((req, res) => {
 
@@ -14,28 +54,15 @@ http.createServer((req, res) => {
         method = req.method,
         startRequests = requests => {
             console.log('requests', requests)
-            Object.keys(requests).reduce((acc, topic) => {
-                acc = acc.concat(requests.topic)
-                return acc
-            }, [])
-            var t = {
-                "cars": {
-                    "http://127.0.0.1:3001/cars": {
-                        "writeCars": true
-                    }
-                },
-                "stations": {
-                    "http://127.0.0.1:3001/stations": {
-                        "writeStations": true
-                    }
-                }
-            };
-
-
-
-            return reply(requests)
+            return Promise.all(
+                Object.keys(requests).reduce((acc, endpoint) => {
+                    console.log(endpoint)
+                    acc.push(new Promise((resolve, reject) => request(endpoint, resolve, reject)))
+                    return acc
+                }, [])
+            ).then(reply)
         },
-        reply = data => res.end(data);
+        reply = data => res.end(JSON.stringify(data));
 
     if (method === 'OPTIONS') {
         res.writeHead(200);
@@ -45,7 +72,10 @@ http.createServer((req, res) => {
         let body = '';
         req.on('data', data => body += data);
         // body already has the stringified version
-        req.on('end', () => startRequests(body));
+        req.on('end', () => {
+            const json = JSON.parse(body)
+            startRequests(json)
+        });
     } else {
         res.statusCode = 400;
         res.end('400: Bad Request');

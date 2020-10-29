@@ -1,7 +1,4 @@
 var Transobserver = (function () {
-
-
-
     var key = 'transObserverKey',
         storage = localStorage,
         postData = function (url, data, cb) {

@@ -23,6 +23,10 @@
             "key": "id"
         },
         {
+            "ep": "/stations",
+            "source": "source/api/stations.json"
+        },
+        {
             "ep": "/stations/:id",
             "source": "source/api/stations.json",
             "key": "id"
