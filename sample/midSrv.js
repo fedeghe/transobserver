@@ -30,7 +30,7 @@ const request = (url, resolve, reject) => {
         res.on('end', () => {
             try {
                 const parsedData = JSON.parse(rawData);
-                resolve(parsedData);
+                resolve({data: parsedData, url});
             } catch (e) {
                 reject(e.message);
             }

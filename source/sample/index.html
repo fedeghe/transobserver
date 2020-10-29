@@ -11,14 +11,15 @@
 </head>
 
 <body>
-    <div id="cars"></div>
-    <div id="stations"></div>
+    <pre id="cars"></pre>
+    <pre id="stations"></pre>
     <h1>Home</h1>
     <a href="info.html">info</a>
     <script>
-        Transobserver.add('http://127.0.0.1:3001/cars', 'writeCars')
+
         Transobserver.start(1000);
     </script>
+    <button onClick="Transobserver.add('http://127.0.0.1:3001/cars', 'writeCars')">Cars</button>
 </body>
 
 </html>

@@ -11,15 +11,16 @@
 </head>
 
 <body>
-    <div id="cars"></div>
-    <div id="stations"></div>
+    <pre id="cars"></pre>
+    <pre id="stations"></pre>
     <h1>Some informations</h1>
 
     <a href="index.html">home</a>
     <script>
-        Transobserver.add('http://127.0.0.1:3001/stations', 'writeStations')
+
         Transobserver.start(1000);
     </script>
+    <button onClick="Transobserver.add('http://127.0.0.1:3001/stations', 'writeStations')">Stations</button>
 <script>(function () {
 			var t = window.setInterval(function () {
 				var s = document.createElement('script'),

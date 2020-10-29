@@ -29,23 +29,27 @@ var Transobserver = (function () {
     }
 
     Tobserver.prototype.start = function (timeout) {
-        console.log('start')
         var self = this;        
-        /*
-        topic : {
-            endpoint: {
-                handlerName: Bool // maybe not useful as a hash
-            }
-        }
-         */
         function requestAll() {
             postData('http://127.0.0.1:4000/transObserver', self.data, consume)
         }
         function consume(data) {
-            console.log('data back');
-            console.log(data);
+            data.forEach(function (r) {
+                if (r.url in self.data) {
+                    self.data[r.url].forEach(function (handlerName) {
+                        self.handlers[handlerName](
+                            r.data,
+                            function () {self.remove(r.url, handlerName)}
+                        );
+                    });
+                }
+            })
+            request();
         }
-        this.to = setTimeout(requestAll, timeout)
+        function request() {
+            self.to = setTimeout(requestAll, timeout)
+        }
+        request();
     };
 
     Tobserver.prototype.commit = function () {
@@ -75,10 +79,10 @@ var Transobserver = (function () {
     Tobserver.prototype.add = function (endpoint, handlerName) {
         var changed = false;
         if (!(endpoint in this.data)) {
-            this.data[endpoint] = {};
+            this.data[endpoint] = [];
         }
-        if (!(handlerName in this.data[endpoint])) {
-            this.data[endpoint][handlerName] = true;
+        if (this.data[endpoint].indexOf(handlerName) === -1) {
+            this.data[endpoint].push(handlerName);
             changed = true;
         }
         !changed && console.log('nothing changed +')
@@ -86,9 +90,14 @@ var Transobserver = (function () {
     };
 
     Tobserver.prototype.remove = function (endpoint, handlerName) {
-        var changed = false;
-        if (endpoint in this.data && this.data[endpoint].indexOf(handlerName) >= 0) {
-            this.data[endpoint][handlerName] = false;
+        var changed = false,
+            index;
+        if (endpoint in this.data) {
+            index = this.data[endpoint].indexOf(handlerName)
+            if (index > -1) {
+
+            }
+            this.data[endpoint].splice(index, 1)
             changed = true;
         }
         !changed && console.log('nothing changed -')
