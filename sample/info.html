@@ -17,10 +17,12 @@
 
     <a href="index.html">home</a>
     <script>
-
         Transobserver.start(1000);
+        function doStart() {
+            Transobserver.add('http://127.0.0.1:3001/stations', 'writeStations')
+        }
     </script>
-    <button onClick="Transobserver.add('http://127.0.0.1:3001/stations', 'writeStations')">Stations</button>
+    <button onClick="doStart()">Stations</button>
 <script>(function () {
 			var t = window.setInterval(function () {
 				var s = document.createElement('script'),

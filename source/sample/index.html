@@ -16,10 +16,12 @@
     <h1>Home</h1>
     <a href="info.html">info</a>
     <script>
-
         Transobserver.start(1000);
+        function doStart() {
+            Transobserver.add('http://127.0.0.1:3001/cars', 'writeCars')
+        }
     </script>
-    <button onClick="Transobserver.add('http://127.0.0.1:3001/cars', 'writeCars')">Cars</button>
+    <button onClick="doStart()">Cars</button>
 </body>
 
 </html>
