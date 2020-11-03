@@ -3,6 +3,6 @@
         "rm -rf dist",
         "mkdir dist"
     ],
-    "source/index.js": "dist -plugins=malta-restify[endpoints:'source/api/restify.json']",
+    "source/index.js": "dist -plugins=malta-restify[endpoints:'source/api/restify.json',handlers:'source/api/handlers.js',delay:3000]",
     "source/sample/require.json": true
 }

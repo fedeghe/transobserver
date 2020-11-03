@@ -4,8 +4,6 @@ const http = require('http'),
     port = 4000,
     route = '/transObserver';
 
-
-
 const request = (url, resolve, reject) => {
     console.log(`requesting ${url}`)
     http.get(url, (res) => {
@@ -23,7 +21,6 @@ const request = (url, resolve, reject) => {
             res.resume();
             return;
         }
-
         res.setEncoding('utf8');
         let rawData = '';
         res.on('data', (chunk) => { rawData += chunk.toString(); });
@@ -40,16 +37,12 @@ const request = (url, resolve, reject) => {
     });
 };
 
-
-
 http.createServer((req, res) => {
-
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Request-Method', '*');
     res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, POST');
     res.setHeader('Access-Control-Allow-Headers', '*');
     res.setHeader('Content-Type', 'application/json');
-
     const url = req.url,
         method = req.method,
         startRequests = requests => {
