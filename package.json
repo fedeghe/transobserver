@@ -9,7 +9,7 @@
         "malta-browser-refresh": "^1.2.9",
         "malta-dev-srv": "^1.1.7",
         "malta-less": "^1.0.12",
-        "malta-restify": "^1.0.6"
+        "malta-restify": "^1.1.4"
     },
     "scripts": {
         "build": "malta source/build.json",
